@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha test/**/*_spec.*",
+    "test": "mocha",
     "test-watch": "npm test -- --watch",
     "lint": "eslint lib/ test/",
     "coverage": "istanbul cover _mocha"
@@ -41,5 +41,8 @@
     "mocha": "^2.3.3",
     "selenium-standalone": "^4.6.0",
     "webdriverio": "^3.2.4"
+  },
+  "dependencies": {
+    "object-assign": "^4.0.1"
   }
 }
