@@ -1,5 +1,6 @@
 var expect = require('expect')
 var lib = require('../lib')
+var seleniumHelper = require('../lib/helpers/selenium')
 
 var mochaContext = {
   before: function () {},
@@ -19,6 +20,7 @@ var boundContext = {
   },
   '__special': true
 }
+
 
 describe('WebdriverIO Test Harness', function () {
   beforeEach(function () {
