@@ -1,6 +1,6 @@
 {
   "name": "webdriverio-selenium-harness",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A WebdriverIO and Selenium Test Harness. Useful for bolting on integration test suite",
   "main": "lib/index.js",
   "directories": {
