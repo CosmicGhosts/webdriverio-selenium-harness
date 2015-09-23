@@ -5,7 +5,7 @@
 ### Setup
 
 `setup` takes an object of options for both webdriverio and selenium.
-`setup` returns a Promise of harness state that contains the browser client from webdriverio and the selenium process
+`setup` returns a Promise of harness state that contains the browser client from webdriverio and the selenium process.
 
 ```javascript
 var options = {
