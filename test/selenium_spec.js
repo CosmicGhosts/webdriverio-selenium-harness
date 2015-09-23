@@ -1,10 +1,7 @@
-var chai = require('chai')
-var sinon = require('sinon')
-var sinonChai = require('sinon-chai')
-var expect = chai.expect
-chai.use(sinonChai)
-
 var selenium = require('selenium-standalone')
+var helper = require('./specHelper')
+var expect = helper.expect
+var sinon = helper.sinon
 var lib = require('../lib/helpers/selenium')
 
 describe('Selenium Helper', function () {

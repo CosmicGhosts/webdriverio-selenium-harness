@@ -1,7 +1,7 @@
-var expect = require('chai').expect
+var helper = require('./specHelper')
+var expect = helper.expect
+var sinon = helper.sinon
 var harness = require('../lib')
-var seleniumHelper = require('../lib/helpers/selenium')
-var webdriverio = require('webdriverio')
 
 var options = {
   webdriverio: {
@@ -14,8 +14,8 @@ var options = {
 describe('WebdriverIO Selenium Harness integration', function () {
   before(function () {
     var self = this
-    var harnessState = this.harnessState = harness.setup(options)
-    return harnessState.then(function (state) {
+    this.harnessState = harness.setup(options)
+    return this.harnessState.then(function (state) {
       self.browser = state.browser
       self.selenium = state.selenium
     })
