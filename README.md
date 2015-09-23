@@ -4,7 +4,7 @@
 
 ### Setup
 
-`setup` takes an object of options for both webdriverio and selenium.
+`setup` takes an object of options for both webdriverio and selenium.  
 `setup` returns a Promise of harness state that contains the browser client from webdriverio and the selenium process.
 
 ```javascript
@@ -22,7 +22,7 @@ harness.setup(options).then(function (state) {
 
 ### Teardown
 
-`teardown` takes the harness state and closes the browser client and selenium process.
+`teardown` takes the harness state and closes the browser client and selenium process.  
 `teardown` will return a Promise of undefined.
 
 ```javascript
