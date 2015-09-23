@@ -170,6 +170,8 @@ describe('WebdriverIO Test Harness', function () {
         this.sandbox = sinon.sandbox.create()
         this.sandbox.stub(browser, 'end')
         this.sandbox.stub(childProcess, 'kill')
+        this.sandbox.stub(seleniumHelper, 'teardown')
+        seleniumHelper.teardown.returns(Promise.resolve())
         browser.end.returns(Promise.resolve())
       })
 
@@ -197,8 +199,9 @@ describe('WebdriverIO Test Harness', function () {
 
         return lib.teardown(options)
           .then(function () {
-            expect(childProcess.kill).to.have.been.calledOnce
-            expect(childProcess.kill).to.have.been.calledAfter(browser.end)
+            expect(seleniumHelper.teardown).to.have.been.calledOnce
+            expect(seleniumHelper.teardown).to.have.been.calledWithMatch(childProcess)
+            expect(seleniumHelper.teardown).to.have.been.calledAfter(browser.end)
           })
       })
     })

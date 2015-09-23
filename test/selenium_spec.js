@@ -9,8 +9,8 @@ var lib = require('../lib/helpers/selenium')
 
 describe('Selenium Helper', function () {
   beforeEach(function () {
-    var sandbox = this.sandbox = sinon.sandbox.create()
-    sandbox.stub(selenium, 'start')
+    this.sandbox = sinon.sandbox.create()
+    this.sandbox.stub(selenium, 'start')
     selenium.start.callsArgAsync(1)
   })
 
@@ -20,15 +20,14 @@ describe('Selenium Helper', function () {
 
   describe('#setup', function () {
     it('calls selenium start', function () {
-      var result = lib.setup({})
+      lib.setup({})
       expect(selenium.start).to.have.been.calledOnce
     })
 
     context('When given options', function () {
       it('calls selenium start with options', function () {
         var options = { test: true }
-        var result = lib.setup(options)
-        return result.then(function () {
+        return lib.setup(options).then(function () {
           expect(selenium.start).to.have.been.calledWithMatch(options)
         })
       })
@@ -44,8 +43,8 @@ describe('Selenium Helper', function () {
 
     context('When selenium start succeeds', function () {
       beforeEach(function () {
-        var childProcess = this.childProcess = { kill: true }
-        selenium.start.callsArgWithAsync(1, null, childProcess)
+        this.childProcess = { kill: true }
+        selenium.start.callsArgWithAsync(1, null, this.childProcess)
       })
 
       it('returns fulfilled promise of process', function () {
@@ -58,13 +57,25 @@ describe('Selenium Helper', function () {
 
     context('When selenium start fails', function () {
       beforeEach(function () {
-        var error = this.error = { error: true }
-        selenium.start.callsArgWithAsync(1, error)
+        this.error = { error: true }
+        selenium.start.callsArgWithAsync(1, this.error)
       })
 
       it('returns rejected promise of error', function () {
-        lib.setup().catch(function (error) {
-          expect(error).to.eql(this.error)
+        var error = this.error
+        return lib.setup().catch(function (err) {
+          expect(err).to.eql(error)
+        })
+      })
+    })
+  })
+
+  describe('#teardown', function () {
+    context('When given a child process', function () {
+      it('kills it', function () {
+        var childProcess = { kill: sinon.spy() }
+        return lib.teardown(childProcess).then(function () {
+          expect(childProcess.kill).to.be.calledOnce
         })
       })
     })
