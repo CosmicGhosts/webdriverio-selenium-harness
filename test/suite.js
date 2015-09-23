@@ -30,10 +30,10 @@ describe('WebdriverIO Test Harness', function () {
 
     context('With Selenium options', function () {
       it('setups Selenium', function () {
-        var options = { seleniumOpts: { seleniumArgs: [] } }
+        var options = { selenium: { seleniumArgs: [] } }
         return lib.setup(options).then(function () {
           expect(seleniumHelper.setup).to.be.calledOnce
-          expect(seleniumHelper.setup).to.be.calledWithMatch(options.seleniumOpts)
+          expect(seleniumHelper.setup).to.be.calledWithMatch(options.selenium)
         })
       })
     })
