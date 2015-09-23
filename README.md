@@ -3,14 +3,32 @@
 ## API
 
 ### Setup
-
 `setup` takes an object of options for both **webdriverio** and **selenium**.  
-`setup` returns a **Promise** of harness state which contains the **webdriverio** client and the **selenium** process.
+`setup` returns a **Promise** of harness state which contains the **webdriverio** client and the **selenium** process.  
+The options are namespaced for **webdriverio** and **selenium**, and each of the options will reflect the APIs provided in these documents.
+
+#### WebdriverIO
+##### init
+http://webdriver.io/api/protocol/init.html
+##### remote
+http://webdriver.io/guide/getstarted/configuration.html
+
+#### Selenium Standalone
+https://www.npmjs.com/package/selenium-standalone
 
 ```javascript
 var options = {
-  webdriverio: {}
-  selenium: {}
+  webdriverio: {
+    remote: {
+      desiredCapabilities: {
+        browserName: 'phantomjs' // chrome, firefox
+      }
+    },
+    init: {}
+  }
+  selenium: {
+    seleniumArgs: []
+  }
 }
 
 harness.setup(options).then(function (state) {
