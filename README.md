@@ -57,6 +57,14 @@ npm i -D selenium-standalone
 npm i -D webdriverio-selenium-harness
 ```
 
+## Usage
+
+
+**Caveats**  
+Install Selenium by running `./node_modules/.bin/selenium-standalone install`. https://www.npmjs.com/package/selenium-standalone  
+
+If you want to use **PhantomJS** make sure you have it installed
+
 ## Peer Dependencies
 
 * [webdriveio](https://www.npmjs.com/package/webdriverio)
