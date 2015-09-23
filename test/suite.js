@@ -1,30 +1,27 @@
 var Promise = require('es6-promise').Promise
-var chai = require('chai')
-var sinon = require('sinon')
-var sinonChai = require('sinon-chai')
-var expect = chai.expect
-chai.use(sinonChai)
-
-
 var webdriverio = require('webdriverio')
-var lib = require('../lib')
+
+var helper = require('./specHelper')
 var seleniumHelper = require('../lib/helpers/selenium')
+var expect = helper.expect
+var sinon = helper.sinon
+
+var lib = require('../lib')
+
 
 var browser = { end: function () {} }
-var process = { kill: function () {} }
+var childProcess = { kill: function () {} }
 
 describe('WebdriverIO Test Harness', function () {
   describe('#setup', function () {
     beforeEach(function () {
-      var sandbox = this.sandbox = sinon.sandbox.create()
-      sandbox.stub(webdriverio, 'remote')
-      sandbox.stub(seleniumHelper, 'setup')
-
-      var initStub = this.initStub = sinon.stub()
-      initStub.returns(Promise.resolve())
+      this.sandbox = sinon.sandbox.create()
+      this.sandbox.stub(webdriverio, 'remote')
+      this.sandbox.stub(seleniumHelper, 'setup')
+      this.initStub = this.sandbox.stub()
+      this.initStub.returns(Promise.resolve())
       seleniumHelper.setup.returns(Promise.resolve())
-      var api = { init: initStub }
-      webdriverio.remote.returns(api)
+      webdriverio.remote.returns({ init: this.initStub })
     })
 
     afterEach(function () {
@@ -42,7 +39,7 @@ describe('WebdriverIO Test Harness', function () {
     })
 
     context('Without Selenium options', function () {
-      it('setups Selenium', function () {
+      it('setups Selenium with defaults', function () {
         return lib.setup().then(function () {
           expect(seleniumHelper.setup).to.be.calledOnce
           expect(seleniumHelper.setup).to.be.calledWithMatch({})
@@ -51,20 +48,15 @@ describe('WebdriverIO Test Harness', function () {
     })
 
     context('When Selenium succeeds', function () {
-      beforeEach(function () {
-        seleniumHelper.setup.returns(Promise.resolve())
-      })
-
       context('and with Webdriver options', function () {
         context('and Webdriverio fails', function () {
           beforeEach(function () {
-            var error = this.error = { error: true }
-            var client = this.client  = Promise.reject(error)
-            var endPromise = Promise.resolve()
-            client.end = this.sandbox.stub().returns(endPromise)
-            this.initStub.returns(client)
-            this.sandbox.stub(process, 'kill')
-            seleniumHelper.setup.returns(Promise.resolve(process))
+            this.error = { error: true }
+            this.client = Promise.reject(this.error)
+            this.initStub.returns(this.client)
+            this.sandbox.stub(childProcess, 'kill')
+            this.client.end = this.sandbox.stub().returns(Promise.resolve())
+            seleniumHelper.setup.returns(Promise.resolve(childProcess))
           })
 
           it('closes the browser client', function () {
@@ -77,8 +69,8 @@ describe('WebdriverIO Test Harness', function () {
           it('kills the selenium process', function () {
             var client = this.client
             return lib.setup({}).catch(function () {
-              expect(process.kill).to.have.been.calledOnce
-              expect(process.kill).to.have.been.calledAfter(client.end)
+              expect(childProcess.kill).to.have.been.calledOnce
+              expect(childProcess.kill).to.have.been.calledAfter(client.end)
             })
           })
 
@@ -91,11 +83,6 @@ describe('WebdriverIO Test Harness', function () {
         })
 
         context('and Webdriverio succeeds', function () {
-          beforeEach(function () {
-            var error = this.error = { error: true }
-            this.initStub.returns(Promise.resolve())
-          })
-
           it('calls WebdriverIO remote', function () {
             var options = {
               webdriverio: {
@@ -127,14 +114,14 @@ describe('WebdriverIO Test Harness', function () {
 
           it('returns WebdriverIO client and Selenium process', function () {
             var client = Promise.resolve(client)
-            var process = { kill: true }
+            var childProcess = { kill: true }
             this.initStub.returns(client)
-            seleniumHelper.setup.returns(Promise.resolve(process))
+            seleniumHelper.setup.returns(Promise.resolve(childProcess))
 
             return lib.setup({}).then(function (value) {
               expect(value).to.eql({
                 browser: client,
-                selenium: process
+                selenium: childProcess
               })
             })
           })
@@ -180,9 +167,9 @@ describe('WebdriverIO Test Harness', function () {
   describe('#teardown', function () {
     context('Given a Webdriverio client and Selenium process', function () {
       beforeEach(function () {
-        var sandbox = this.sandbox = sinon.sandbox.create()
-        sandbox.stub(browser, 'end')
-        sandbox.stub(process, 'kill')
+        this.sandbox = sinon.sandbox.create()
+        this.sandbox.stub(browser, 'end')
+        this.sandbox.stub(childProcess, 'kill')
         browser.end.returns(Promise.resolve())
       })
 
@@ -193,7 +180,7 @@ describe('WebdriverIO Test Harness', function () {
       it('ends Webdriverio client', function () {
         var options = {
           browser: browser,
-          selenium: process
+          selenium: childProcess
         }
 
         return lib.teardown(options)
@@ -205,13 +192,13 @@ describe('WebdriverIO Test Harness', function () {
       it('kills Selenium process', function () {
         var options = {
           browser: browser,
-          selenium: process
+          selenium: childProcess
         }
 
         return lib.teardown(options)
           .then(function () {
-            expect(process.kill).to.have.been.calledOnce
-            expect(process.kill).to.have.been.calledAfter(browser.end)
+            expect(childProcess.kill).to.have.been.calledOnce
+            expect(childProcess.kill).to.have.been.calledAfter(browser.end)
           })
       })
     })
