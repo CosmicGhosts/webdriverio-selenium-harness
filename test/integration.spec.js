@@ -1,4 +1,4 @@
-var helper = require('./specHelper')
+var helper = require('./helpers')
 var expect = helper.expect
 var sinon = helper.sinon
 var server = require('./helpers/server')

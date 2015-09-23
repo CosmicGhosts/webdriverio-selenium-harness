@@ -1,7 +1,7 @@
 var Promise = require('es6-promise').Promise
 var webdriverio = require('webdriverio')
 
-var helper = require('./specHelper')
+var helper = require('./helpers')
 var seleniumHelper = require('../lib/helpers/selenium')
 var expect = helper.expect
 var sinon = helper.sinon
