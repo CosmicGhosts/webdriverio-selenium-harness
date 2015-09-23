@@ -1,6 +1,7 @@
 var helper = require('./specHelper')
 var expect = helper.expect
 var sinon = helper.sinon
+var server = require('./helpers/server')
 var harness = require('../lib')
 
 var options = {
@@ -12,17 +13,20 @@ var options = {
 }
 
 describe('WebdriverIO Selenium Harness integration', function () {
-  before(function () {
+  before(function (done) {
     var self = this
     this.harnessState = harness.setup(options)
     return this.harnessState.then(function (state) {
       self.browser = state.browser
       self.selenium = state.selenium
+      server.listen(9000, done)
     })
   })
 
   after(function () {
-    return this.harnessState.then(harness.teardown)
+    return this.harnessState
+      .then(harness.teardown)
+      .then(function () { server.close() })
   })
 
   describe('Feature: Test Page', function () {
