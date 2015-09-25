@@ -1,5 +1,57 @@
 # WebdriverIO & Selenium Test Harness
 
+## Why
+This test harness allows you to setup bootstrap your feature/intergration tests with **WebdriverIO** and **Selenium**.  
+It makes setup and teardown trivial, especially for starting and stopping a local selenium server.
+
+## Installation
+
+First you want to install the `peerDependencies` and then the package itself.
+
+```shell
+npm i -D webdriverio
+npm i -D selenium-standalone
+npm i -D webdriverio-selenium-harness
+```
+
+## Usage
+
+You can use the test harness in your test framework of choice.  
+Just require the module and call `setup` and `teardown` in your `before` and `after` hooks.
+
+#### Example
+
+```javascript
+// Mocha
+
+var harness = require('webdriverio-selenium-harness')
+var options = {}
+
+describe('Feature', function () {
+  before(function () {
+    var self = this
+    self.harnessState = harness.setup(options)
+    return harnessState.then(function (state) {
+      self.browser = state.browser
+    })
+  })
+  
+  after(function () {
+    var self = this
+    return self.harnessState.then(harness.teardown)
+  })
+  
+  // Tests ...
+})
+```
+
+**Caveats**  
+
+* Make sure if your tests ever crash that, `teardown` always run. Otherwise you may have processes left on.
+* Make sure you have your Browsers or **PhantomJS** installed.
+* Install Selenium by running `./node_modules/.bin/selenium-standalone install`.  
+ Reference: https://www.npmjs.com/package/selenium-standalone
+
 ## API
 
 ### Setup
@@ -53,50 +105,6 @@ harness.teardown(state).then(function () {
   // etc
 })
 ```
-
-## Installation
-
-```shell
-npm i -D webdriverio
-npm i -D selenium-standalone
-npm i -D webdriverio-selenium-harness
-```
-
-## Usage
-
-The test harness is useful for running End to End tests.  
-Just require the module and call `setup` and `teardown` in your `before` and `after` hooks.
-
-#### Example
-
-```javascript
-// Mocha
-
-var harness = require('webdriverio-selenium-harness')
-var options = {}
-
-describe('Feature', function () {
-  before(function () {
-    var self = this
-    self.harnessState = harness.setup(options)
-    return harnessState.then(function (state) {
-      self.browser = state.browser
-    })
-  })
-  
-  after(function () {
-    var self = this
-    return self.harnessState.then(harness.teardown)
-  })
-  
-  // Tests ...
-})
-```
-
-**Caveats**  
- * If you want to use **PhantomJS** make sure you have it installed.
- * Install Selenium by running `./node_modules/.bin/selenium-standalone install`.  
- https://www.npmjs.com/package/selenium-standalone  
 
 ## Peer Dependencies
 
