@@ -1,8 +1,7 @@
 # WebdriverIO & Selenium Test Harness
 
 ## Why
-This test harness allows you to setup bootstrap your feature/intergration tests with **WebdriverIO** and **Selenium**.  
-It makes setup and teardown trivial, especially for starting and stopping a local selenium server.
+This test harness allows you to setup bootstrap your feature/intergration tests with **WebdriverIO** and **Selenium**. It makes setup and teardown trivial, especially for starting and stopping a local selenium server.
 
 ## Installation
 
@@ -47,10 +46,11 @@ describe('Feature', function () {
 
 **Caveats**  
 
-* Make sure if your tests ever crash that, `teardown` always run. Otherwise you may have processes left on.
 * Make sure you have your Browsers or **PhantomJS** installed.
 * Install Selenium by running `./node_modules/.bin/selenium-standalone install`.  
- Reference: https://www.npmjs.com/package/selenium-standalone
+  Reference: https://www.npmjs.com/package/selenium-standalone
+* Make sure if your tests ever crash that, `teardown` always run.
+  Otherwise you may have processes left on.
 
 ## API
 
@@ -61,15 +61,14 @@ describe('Feature', function () {
 Options are namespaced by **webdriverio** and **selenium**.  
 Each of the options will reflect the APIs provided in these documents.
 
-##### WebdriverIO
-**init**  
-http://webdriver.io/api/protocol/init.html
+###### References
 
-**remote**  
-http://webdriver.io/guide/getstarted/configuration.html
+**WebdriverIO**  
+[init](http://webdriver.io/api/protocol/init.html)  
+[remote](http://webdriver.io/guide/getstarted/configuration.html)  
 
-##### Selenium Standalone
-https://www.npmjs.com/package/selenium-standalone
+**Selenium**  
+[selenium](https://www.npmjs.com/package/selenium-standalone)
 
 #### Example
 
