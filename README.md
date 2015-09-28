@@ -99,6 +99,8 @@ harness.setup(options).then(function (state) {
 `teardown` takes harness state and then closes the **webdriverio** client and **selenium** process.  
 `teardown` will return a **Promise** of undefined.
 
+#### Example
+
 ```javascript
 harness.teardown(state).then(function () {
   // etc
