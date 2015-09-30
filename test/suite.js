@@ -5,22 +5,26 @@ var helper = require('./helpers')
 var seleniumHelper = require('../lib/helpers/selenium')
 var expect = helper.expect
 var sinon = helper.sinon
-
 var lib = require('../lib')
-
 
 var browser = { end: function () {} }
 var childProcess = { kill: function () {} }
+var childPromise = Promise.resolve(childProcess)
+
+var sharedWebdriverIO = require('./shared/webdriverio-behavior')
 
 describe('WebdriverIO Test Harness', function () {
   describe('#setup', function () {
     beforeEach(function () {
       this.sandbox = sinon.sandbox.create()
+      this.initStub = this.sandbox.stub()
+
       this.sandbox.stub(webdriverio, 'remote')
       this.sandbox.stub(seleniumHelper, 'setup')
-      this.initStub = this.sandbox.stub()
+      this.sandbox.stub(childProcess, 'kill')
+
       this.initStub.returns(Promise.resolve())
-      seleniumHelper.setup.returns(Promise.resolve())
+      seleniumHelper.setup.returns(childPromise)
       webdriverio.remote.returns({ init: this.initStub })
     })
 
@@ -29,8 +33,12 @@ describe('WebdriverIO Test Harness', function () {
     })
 
     context('With Selenium options', function () {
+      beforeEach(function () {
+        this.options = { selenium: { seleniumArgs: [] } }
+      })
+
       it('setups Selenium', function () {
-        var options = { selenium: { seleniumArgs: [] } }
+        var options = this.options
         return lib.setup(options).then(function () {
           expect(seleniumHelper.setup).to.be.calledOnce
           expect(seleniumHelper.setup).to.be.calledWithMatch(options.selenium)
@@ -47,84 +55,49 @@ describe('WebdriverIO Test Harness', function () {
       })
     })
 
-    context('When Selenium succeeds', function () {
-      context('and with Webdriver options', function () {
-        context('and Webdriverio fails', function () {
-          beforeEach(function () {
-            this.error = { error: true }
-            this.client = Promise.reject(this.error)
-            this.initStub.returns(this.client)
-            this.sandbox.stub(childProcess, 'kill')
-            this.client.end = this.sandbox.stub().returns(Promise.resolve())
-            seleniumHelper.setup.returns(Promise.resolve(childProcess))
-          })
+    context('With Custom Options', function () {
+      context('and remoteSelenium is true', function () {
+        beforeEach(function () {
+          this.options = { custom: { remoteSelenium: true } }
+        })
 
-          it('closes the browser client', function () {
-            var client = this.client
-            return lib.setup({}).catch(function () {
-              expect(client.end).to.have.been.called
-            })
-          })
-
-          it('kills the selenium process', function () {
-            var client = this.client
-            return lib.setup({}).catch(function () {
-              expect(childProcess.kill).to.have.been.calledOnce
-              expect(childProcess.kill).to.have.been.calledAfter(client.end)
-            })
-          })
-
-          it('propagates errors', function () {
-            var error = this.error
-            return lib.setup({}).catch(function (err) {
-              expect(err).to.eql(error)
-            })
+        it('does not start selenium', function () {
+          var options = this.options
+          return lib.setup(options).then(function () {
+            expect(seleniumHelper.setup).to.not.be.called
           })
         })
 
-        context('and Webdriverio succeeds', function () {
-          it('calls WebdriverIO remote', function () {
-            var options = {
-              webdriverio: {
-                remote: { desiredCapabilities: { browserName: 'chrome' } }
-              }
-            }
+        sharedWebdriverIO({
+          lib: lib,
+          seleniumHelper: seleniumHelper,
+          childProcess: childProcess
+        })
+      })
 
-            return lib.setup(options).then(function () {
-              expect(webdriverio.remote).to.have.been.calledOnce
-              expect(webdriverio.remote)
-                .to.have.been.calledWithMatch(options.webdriverio.remote)
-            })
+      context('and remoteSelenium is false', function () {
+        it('setups Selenium', function () {
+          var options = this.options
+          return lib.setup(options).then(function () {
+            expect(seleniumHelper.setup).to.be.calledOnce
+            expect(seleniumHelper.setup).to.be.calledWithMatch({})
           })
+        })
 
-          it('calls WebdriverIO init', function () {
-            var options = {
-              webdriverio: {
-                init: { desiredCapabilities: { browserName: 'chrome' } }
-              }
-            }
-            var initStub = this.initStub
+        sharedWebdriverIO({
+          lib: lib,
+          seleniumHelper: seleniumHelper,
+          childProcess: childProcess
+        })
+      })
+    })
 
-            return lib.setup(options).then(function () {
-              expect(initStub).to.have.been.calledOnce
-              expect(initStub).to.have.been.calledAfter(webdriverio.remote)
-              expect(initStub).to.have.been.calledWithMatch(options.webdriverio.init)
-            })
-          })
-
-          it('returns WebdriverIO client and Selenium process', function () {
-            var client = Promise.resolve(client)
-            var childProcess = { kill: true }
-            this.initStub.returns(client)
-            seleniumHelper.setup.returns(Promise.resolve(childProcess))
-
-            return lib.setup({}).then(function (value) {
-              expect(value).to.eql({
-                browser: client,
-                selenium: childProcess
-              })
-            })
-          })
+    context('When Selenium succeeds', function () {
+      context('and with Webdriver options', function () {
+        sharedWebdriverIO({
+          lib: lib,
+          seleniumHelper: seleniumHelper,
+          childProcess: childProcess
         })
       })
 
@@ -143,6 +116,12 @@ describe('WebdriverIO Test Harness', function () {
             expect(initStub).to.have.been.calledAfter(webdriverio.remote)
             expect(initStub).to.have.been.calledWithMatch({})
           })
+        })
+
+        sharedWebdriverIO({
+          lib: lib,
+          seleniumHelper: seleniumHelper,
+          childProcess: childProcess
         })
       })
     })
@@ -168,9 +147,11 @@ describe('WebdriverIO Test Harness', function () {
     context('Given a Webdriverio client and Selenium process', function () {
       beforeEach(function () {
         this.sandbox = sinon.sandbox.create()
+
         this.sandbox.stub(browser, 'end')
         this.sandbox.stub(childProcess, 'kill')
         this.sandbox.stub(seleniumHelper, 'teardown')
+
         seleniumHelper.teardown.returns(Promise.resolve())
         browser.end.returns(Promise.resolve())
       })

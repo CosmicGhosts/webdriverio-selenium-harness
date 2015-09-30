@@ -4,7 +4,12 @@ var sinon = helper.sinon
 var server = require('./helpers/server')
 var harness = require('../lib')
 
+var isCI = !!process.env.CI
+
 var options = {
+  custom: {
+    remoteSelenium: isCI
+  },
   webdriverio: {
     remote: {
       desiredCapabilities: { browserName: 'phantomjs' }
