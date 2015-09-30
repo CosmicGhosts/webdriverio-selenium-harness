@@ -20,7 +20,10 @@ describe('WebdriverIO Selenium Harness integration', function () {
   describe('With local selenium', function () {
     before(function () {
       var self = this
-      var harnessState = self.harnessState = harness.setup(self.options)
+      var options = self.options = assign({}, this.options, {
+        custom: { remoteSelenium: isCI }
+      })
+      var harnessState = self.harnessState = harness.setup(options)
       return harnessState.then(function (state) {
         self.browser = state.browser
         self.selenium = state.selenium

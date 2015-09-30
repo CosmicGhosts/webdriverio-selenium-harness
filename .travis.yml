@@ -9,5 +9,11 @@ node_js:
 env:
   - CI="travis"
 
-before_script: "./node_modules/.bin/selenium-standalone install && ./node_modules/.bin/selenium-standalone start"
-after_script: "npm run ci"
+before_script:
+  - npm run selenium-install
+  - npm run selenium-start &
+  - sleep 2
+script:
+  - npm run ci
+after_script:
+  - npm run selenium-stop

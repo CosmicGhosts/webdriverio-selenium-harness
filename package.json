@@ -13,6 +13,9 @@
     "coveralls": "npm run lcov | coveralls",
     "lcov": "cat ./coverage/lcov.info",
     "lint": "eslint lib/ test/",
+    "selenium-install": "selenium-standalone install",
+    "selenium-start": "selenium-standalone start",
+    "selenium-stop": "pkill -f selenium",
     "test": "mocha",
     "test-watch": "npm test -- --watch"
   },
