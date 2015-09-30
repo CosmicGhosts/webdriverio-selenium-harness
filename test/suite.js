@@ -11,7 +11,7 @@ var browser = { end: function () {} }
 var childProcess = { kill: function () {} }
 var childPromise = Promise.resolve(childProcess)
 
-var sharedWebdriverIO = require('./shared/webdriverio-behavior')
+var sharedWebdriverIO = require('./shared/webdriverio')
 
 describe('WebdriverIO Test Harness', function () {
   describe('#setup', function () {

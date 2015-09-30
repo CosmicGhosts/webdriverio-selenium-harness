@@ -6,5 +6,8 @@ node_js:
   - "0.12"
   - "0.10"
 
-before_script: "./node_modules/.bin/selenium-standalone install"
+env:
+  - CI="travis"
+
+before_script: "./node_modules/.bin/selenium-standalone install && ./node_modules/.bin/selenium-standalone start"
 after_script: "npm run ci"
