@@ -7,10 +7,17 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha",
-    "test-watch": "npm test -- --watch",
+    "ci": "npm run lint && npm run coverage && npm run coveralls",
+    "codeclimate": "npm run lcov | codeclimate-test-reporter",
+    "coverage": "istanbul cover _mocha",
+    "coveralls": "npm run lcov | coveralls",
+    "lcov": "cat ./coverage/lcov.info",
     "lint": "eslint lib/ test/",
-    "coverage": "istanbul cover _mocha"
+    "selenium-install": "selenium-standalone install",
+    "selenium-start": "selenium-standalone start",
+    "selenium-stop": "pkill -f selenium",
+    "test": "mocha",
+    "test-watch": "npm test -- --watch"
   },
   "repository": {
     "type": "git",
@@ -36,10 +43,13 @@
   },
   "devDependencies": {
     "chai": "^3.3.0",
+    "codeclimate-test-reporter": "^0.1.1",
     "connect": "^3.4.0",
+    "coveralls": "^2.11.4",
     "eslint": "^1.5.0",
     "istanbul": "^0.3.20",
     "mocha": "^2.3.3",
+    "object-assign": "^4.0.1",
     "selenium-standalone": "^4.6.0",
     "serve-static": "^1.10.0",
     "sinon": "^1.16.1",
