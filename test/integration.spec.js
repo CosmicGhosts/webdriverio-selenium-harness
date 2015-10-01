@@ -7,6 +7,7 @@ var isCI = !!process.env.CI
 
 describe('WebdriverIO Selenium Harness integration', function () {
   before(function (done) {
+    this.timeout(5000)
     var options = this.options = {
       webdriverio: {
         remote: { desiredCapabilities: { browserName: 'phantomjs' } }

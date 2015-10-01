@@ -12,7 +12,7 @@ env:
 before_script:
   - npm run selenium-install
   - nohup npm run selenium-start &
-  - sleep 2
+  - sleep 3
 script:
   - npm run ci
 after_script:
