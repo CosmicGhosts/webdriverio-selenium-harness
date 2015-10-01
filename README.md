@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/seanstrom/webdriverio-selenium-harness.svg?branch=master)](https://travis-ci.org/seanstrom/webdriverio-selenium-harness)
+
 # WebdriverIO & Selenium Test Harness
 
 ## Why
