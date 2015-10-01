@@ -5,7 +5,6 @@ var expect = helpers.expect
 
 module.exports = function (state) {
   var lib = state.lib
-  var seleniumHelper = state.seleniumHelper
   var childProcess = state.childProcess
 
   context('and WebdriverIO fails', function () {
