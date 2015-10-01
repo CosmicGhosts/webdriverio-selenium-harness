@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/seanstrom/webdriverio-selenium-harness.svg?branch=master)](https://travis-ci.org/seanstrom/webdriverio-selenium-harness)
-[![Code Climate](https://codeclimate.com/github/seanstrom/webdriverio-selenium-harness/badges/gpa.svg)](https://codeclimate.com/github/seanstrom/webdriverio-selenium-harness)
 
 # WebdriverIO & Selenium Test Harness
 
