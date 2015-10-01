@@ -1,4 +1,7 @@
 [![Build Status](https://travis-ci.org/seanstrom/webdriverio-selenium-harness.svg?branch=master)](https://travis-ci.org/seanstrom/webdriverio-selenium-harness)
+[![Codacy Badge](https://api.codacy.com/project/badge/a81aa1a83b564898ba0c117c645e99d2)](https://www.codacy.com/app/seanstrom/webdriverio-selenium-harness)
+
+**waiting for code climate to update**  
 [![Code Climate](https://codeclimate.com/github/seanstrom/webdriverio-selenium-harness/badges/gpa.svg)](https://codeclimate.com/github/seanstrom/webdriverio-selenium-harness)
 
 # WebdriverIO & Selenium Test Harness
