@@ -7,10 +7,14 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha",
-    "test-watch": "npm test -- --watch",
+    "ci": "npm run lint && npm run coverage",
+    "coverage": "istanbul cover _mocha -- -R dot",
     "lint": "eslint lib/ test/",
-    "coverage": "istanbul cover _mocha"
+    "selenium-install": "selenium-standalone install",
+    "selenium-start": "selenium-standalone start",
+    "selenium-stop": "pkill -f selenium",
+    "test": "mocha",
+    "test-watch": "npm test -- --watch"
   },
   "repository": {
     "type": "git",
@@ -40,6 +44,7 @@
     "eslint": "^1.5.0",
     "istanbul": "^0.3.20",
     "mocha": "^2.3.3",
+    "object-assign": "^4.0.1",
     "selenium-standalone": "^4.6.0",
     "serve-static": "^1.10.0",
     "sinon": "^1.16.1",
