@@ -13,7 +13,13 @@ before_script:
   - npm run selenium-install
   - nohup npm run selenium-start &
   - sleep 3
+
 script:
   - npm run ci
+
 after_script:
   - npm run selenium-stop
+
+addons:
+  code_climate:
+    repo_token: 0f716ad0d723c1cfff76dfd1fb0ee8632a26c91de0530a38dd92ffbfb4ad4c44
