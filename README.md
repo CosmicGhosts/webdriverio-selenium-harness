@@ -1,8 +1,6 @@
 [![Build Status](https://travis-ci.org/seanstrom/webdriverio-selenium-harness.svg?branch=master)](https://travis-ci.org/seanstrom/webdriverio-selenium-harness)
-[![Codacy Badge](https://api.codacy.com/project/badge/a81aa1a83b564898ba0c117c645e99d2)](https://www.codacy.com/app/seanstrom/webdriverio-selenium-harness)
-
-**waiting for code climate to update**  
 [![Code Climate](https://codeclimate.com/github/seanstrom/webdriverio-selenium-harness/badges/gpa.svg)](https://codeclimate.com/github/seanstrom/webdriverio-selenium-harness)
+[![Codacy Badge](https://api.codacy.com/project/badge/a81aa1a83b564898ba0c117c645e99d2)](https://www.codacy.com/app/seanstrom/webdriverio-selenium-harness)
 
 # WebdriverIO & Selenium Test Harness
 
@@ -67,38 +65,80 @@ describe('Feature', function () {
 Options are namespaced by **webdriverio** and **selenium**.  
 Each of the options will reflect the APIs provided in these documents.
 
-###### References
+#### References
 
-**WebdriverIO**  
+##### WebdriverIO
 [init](http://webdriver.io/api/protocol/init.html)  
 [remote](http://webdriver.io/guide/getstarted/configuration.html)  
 
-**Selenium**  
+##### Selenium
 [selenium](https://www.npmjs.com/package/selenium-standalone)
 
-#### Example
+##### Custom
+
+* **remoteSelenium**  
+Use if you want to the test harness to point to a remote selenium server.
+
+#### Examples
+
+##### Traditional
+
+An example of how to use on your local.
 
 ```javascript
 var options = {
+  custom: {},
+  selenium: {
+    seleniumArgs: []
+  },
   webdriverio: {
+    init: {},
     remote: {
       desiredCapabilities: {
         browserName: 'phantomjs' // chrome, firefox
       }
-    },
-    init: {}
-  }
-  selenium: {
-    seleniumArgs: []
-  }
+    }
+  },
 }
 
 harness.setup(options).then(function (state) {
   var browser = state.browser
   var selenium = state.selenium
 })
-
 ```
+
+##### Continuous Integration
+
+An example of how to use in CI.  
+
+**Note**  
+The Selenium instance in the harness state is a stub process when using `remoteSelenium`.  
+Make sure you have a Selenium server running when using `remoteSelenium` custom option.
+
+```javascript
+var isCI = !!process.env.CI
+
+var options = {
+  custom: { remoteSelenium: isCI },
+  selenium: {
+    seleniumArgs: []
+  },
+  webdriverio: {
+    init: {},
+    remote: {
+      desiredCapabilities: {
+        browserName: 'phantomjs' // chrome, firefox
+      }
+    }
+  },
+}
+
+harness.setup(options).then(function (state) {
+  var browser = state.browser
+  var selenium = state.selenium // stub process - not real.
+})
+```
+
 
 ### Teardown
 
