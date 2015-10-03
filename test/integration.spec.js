@@ -1,8 +1,8 @@
 var assign = require('object-assign')
-var seleniumHelper = require('../lib/helpers/selenium')
+var seleniumHelper = require('../src/helpers/selenium')
 var pageVisitingBehavior = require('./shared/integration')
 var server = require('./helpers/server')
-var harness = require('../lib')
+var harness = require('../src')
 var isCI = !!process.env.CI
 
 describe('WebdriverIO Selenium Harness integration', function () {
