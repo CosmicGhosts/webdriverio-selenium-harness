@@ -2,7 +2,7 @@
   "name": "webdriverio-selenium-harness",
   "version": "1.1.0",
   "description": "A WebdriverIO and Selenium Test Harness. Useful for bolting on integration test suite.",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "directories": {
     "test": "test"
   },
@@ -11,7 +11,7 @@
     "codeclimate": "npm run lcov | codeclimate-test-reporter",
     "coverage": "istanbul cover _mocha -- -R dot",
     "lcov": "cat ./coverage/lcov.info",
-    "lint": "eslint lib/ test/",
+    "lint": "eslint src/ test/",
     "selenium-install": "selenium-standalone install",
     "selenium-start": "selenium-standalone start",
     "selenium-stop": "pkill -f selenium",

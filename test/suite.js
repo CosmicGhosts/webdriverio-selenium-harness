@@ -2,10 +2,10 @@ var Promise = require('es6-promise').Promise
 var webdriverio = require('webdriverio')
 
 var helper = require('./helpers')
-var seleniumHelper = require('../lib/helpers/selenium')
+var seleniumHelper = require('../src/helpers/selenium')
 var expect = helper.expect
 var sinon = helper.sinon
-var lib = require('../lib')
+var lib = require('../src')
 
 var browser = { end: function () {} }
 var childProcess = { kill: function () {} }
