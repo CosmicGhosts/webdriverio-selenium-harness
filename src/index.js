@@ -1,7 +1,7 @@
 var Promise = require('es6-promise').Promise
 var webdriverio = require('webdriverio')
 var seleniumHelper = require('./helpers/selenium')
-var seleniumStub = { kill: function () {}}
+var seleniumStub = { kill: function(){} }
 
 function formatOptions (opts) {
   opts = opts || {}
