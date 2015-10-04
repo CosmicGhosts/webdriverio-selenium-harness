@@ -1,3 +1,4 @@
+var Promise = require('es6-promise').Promise
 var webdriverio = require('webdriverio')
 var assign = require('object-assign')
 var helpers = require('../helpers')

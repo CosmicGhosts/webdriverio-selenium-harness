@@ -1,0 +1,14 @@
+{
+  "bitwise": true,
+  "curly": true,
+  "eqeqeq": true,
+  "forin": true,
+  "latedef": "nofunc",
+  "maxparams": 4,
+  "noarg": true,
+  "undef": true,
+  "unused": true,
+  "asi": true,
+  "node": true,
+  "mocha": true
+}

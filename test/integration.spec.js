@@ -1,3 +1,4 @@
+var Promise = require('es6-promise').Promise
 var assign = require('object-assign')
 var seleniumHelper = require('../src/helpers/selenium')
 var pageVisitingBehavior = require('./shared/integration')
