@@ -7,8 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "ci": "npm run lint && npm run coverage && npm run codeclimate",
+    "ci": "npm run lint && npm run coverage && npm run codeclimate && npm run codecov",
     "codeclimate": "npm run lcov | codeclimate-test-reporter",
+    "codecov": "cat ./coverage/coverage.json | codecov",
     "coverage": "istanbul cover _mocha -- -R dot",
     "lcov": "cat ./coverage/lcov.info",
     "lint": "eslint src/ test/",
@@ -43,6 +44,7 @@
   "devDependencies": {
     "chai": "^3.3.0",
     "codeclimate-test-reporter": "^0.1.1",
+    "codecov.io": "^0.1.6",
     "connect": "^3.4.0",
     "eslint": "^1.5.0",
     "istanbul": "^0.3.20",
