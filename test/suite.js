@@ -99,6 +99,39 @@ describe('WebdriverIO Test Harness', function () {
           seleniumHelper: seleniumHelper,
           childProcess: childProcess
         })
+
+        context('and given multiremote options', function () {
+          beforeEach(function () {
+            this.sandbox.stub(webdriverio, 'multiremote')
+          })
+
+          it('calls webdriverio multiremote', function () {
+            var options = { webdriverio: { multiremote: {} } }
+            return lib.setup(options).then(function () {
+              expect(webdriverio.multiremote).to.have.been.calledOnce
+              expect(webdriverio.multiremote).to.have.been.calledWithMatch({})
+            })
+          })
+
+          it('does not call webdriver remote', function () {
+            var options = { webdriverio: { multiremote: {} } }
+            return lib.setup(options).then(function () {
+              expect(webdriverio.remote).to.not.have.been.called
+            })
+          })
+
+          context('given different options', function () {
+            it('calls webdriverio multiremote', function () {
+              var options = { webdriverio: { multiremote: { option: true } } }
+              return lib.setup(options).then(function () {
+                expect(webdriverio.multiremote).to.have.been.calledOnce
+                expect(webdriverio.multiremote).to.have.been.calledWithMatch({
+                  option: true
+                })
+              })
+            })
+          })
+        })
       })
 
       context('and without Webdriver options', function () {
